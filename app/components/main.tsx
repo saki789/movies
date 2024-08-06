@@ -3,7 +3,7 @@
 
 import React from 'react'
 
-const Main = () => {
+const Main: React.FC = () => {
   return (
     <div>Main</div>
   )
