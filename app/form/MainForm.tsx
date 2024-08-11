@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  styled,
 } from '@mui/material';
 
 interface Movie {
@@ -15,7 +16,15 @@ interface Movie {
   overview: string;
   poster_path: string;
   release_date: string;
-  vote_average: number;
+  vote_average: string;
+  runtime?: number;
+  language?: string;
+  movie_path?: string;
+  trailer_path?: string;
+  budget?: string;
+  box_office?: string;
+  country?: string;
+  director?: string;
 }
 
 interface MainFormProps {
@@ -24,13 +33,29 @@ interface MainFormProps {
   onClose: () => void;
 }
 
+const CustomDialogTitle = styled(DialogTitle)({
+  backgroundColor: '#e3f2fd', // Soft blue color
+});
+
+const CustomDialogActions = styled(DialogActions)({
+  backgroundColor: '#e3f2fd', // Soft blue color
+});
+
 const MainForm: React.FC<MainFormProps> = ({ movie, onSave, onClose }) => {
   const [formState, setFormState] = useState<Movie>({
     title: '',
     overview: '',
     poster_path: '',
     release_date: '',
-    vote_average: 0,
+    vote_average: '',
+    runtime: 0,
+    language: '',
+    movie_path: '',
+    trailer_path: '',
+    budget: '',
+    box_office: '',
+    country: '',
+    director: '',
   });
 
   useEffect(() => {
@@ -42,14 +67,27 @@ const MainForm: React.FC<MainFormProps> = ({ movie, onSave, onClose }) => {
         overview: '',
         poster_path: '',
         release_date: '',
-        vote_average: 0,
+        vote_average: '',
+        runtime: 0,
+        language: '',
+        movie_path: '',
+        trailer_path: '',
+        budget: '',
+        box_office: '',
+        country: '',
+        director: '',
       });
     }
   }, [movie]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormState((prevState) => ({ ...prevState, [name]: value }));
+    setFormState(prevState => ({
+      ...prevState,
+      [name]: name === 'vote_average' ? value : 
+              (name === 'runtime' ? parseFloat(value) : 
+              (name === 'budget' || name === 'box_office' ? value : value)),
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -61,14 +99,15 @@ const MainForm: React.FC<MainFormProps> = ({ movie, onSave, onClose }) => {
     <Dialog
       open={true}
       onClose={onClose}
-      maxWidth="sm"
+      maxWidth="lg"
       fullWidth
     >
-      <DialogTitle>{movie?.id ? 'Edit Movie' : 'Add Movie'}</DialogTitle>
+      <CustomDialogTitle>{movie?.id ? 'Edit Movie' : 'Add Movie'}</CustomDialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            {/* First Row */}
+            <Grid item xs={12} sm={4}>
               <TextField
                 name="title"
                 label="Title"
@@ -79,20 +118,7 @@ const MainForm: React.FC<MainFormProps> = ({ movie, onSave, onClose }) => {
                 margin="dense"
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="overview"
-                label="Overview"
-                value={formState.overview}
-                onChange={handleChange}
-                fullWidth
-                multiline
-                rows={4}
-                variant="outlined"
-                margin="dense"
-              />
-            </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 name="poster_path"
                 label="Poster Path"
@@ -103,25 +129,26 @@ const MainForm: React.FC<MainFormProps> = ({ movie, onSave, onClose }) => {
                 margin="dense"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 name="release_date"
                 label="Release Date"
                 type="date"
-                InputLabelProps={{ shrink: true }}
                 value={formState.release_date}
                 onChange={handleChange}
                 fullWidth
                 variant="outlined"
                 margin="dense"
+                InputLabelProps={{ shrink: true }}
               />
             </Grid>
-            <Grid item xs={12}>
+
+            {/* Second Row */}
+            <Grid item xs={12} sm={4}>
               <TextField
                 name="vote_average"
                 label="Vote Average"
-                type="number"
-                InputLabelProps={{ shrink: true }}
+                type="text"
                 value={formState.vote_average}
                 onChange={handleChange}
                 fullWidth
@@ -129,20 +156,127 @@ const MainForm: React.FC<MainFormProps> = ({ movie, onSave, onClose }) => {
                 margin="dense"
               />
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                name="runtime"
+                label="Runtime (mins)"
+                type="number"
+                value={formState.runtime || ''}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                name="language"
+                label="Language"
+                value={formState.language}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+              />
+            </Grid>
+
+            {/* Third Row */}
+            <Grid item xs={12} sm={4}>
+              <TextField
+                name="movie_path"
+                label="Movie Path"
+                value={formState.movie_path}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                name="trailer_path"
+                label="Trailer Path"
+                value={formState.trailer_path}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                name="budget"
+                label="Budget"
+                value={formState.budget}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+              />
+            </Grid>
+
+            {/* Fourth Row */}
+            <Grid item xs={12} sm={4}>
+              <TextField
+                name="box_office"
+                label="Box Office"
+                value={formState.box_office}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                name="country"
+                label="Country"
+                value={formState.country}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                name="director"
+                label="Director"
+                value={formState.director}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+              />
+            </Grid>
+
+            {/* Fifth Row */}
+            <Grid item xs={12}>
+              <TextField
+                name="overview"
+                label="Overview"
+                value={formState.overview}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+                multiline
+                rows={4} // Adjust number of rows for the textarea
+              />
+            </Grid>
           </Grid>
+          <CustomDialogActions>
+            <Button onClick={onClose}>Cancel</Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              Save
+            </Button>
+          </CustomDialogActions>
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-        >
-          Save
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

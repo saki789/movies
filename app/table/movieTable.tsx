@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { Box, Button } from '@mui/material';
 import MainForm from '../form/MainForm';
+import { format } from 'date-fns';
 
 interface Movie {
   id?: number;
@@ -9,7 +10,15 @@ interface Movie {
   overview: string;
   poster_path: string;
   release_date: string;
-  vote_average: number;
+  vote_average: string; // Updated to string to match the data
+  runtime?: number;
+  language?: string;
+  movie_path?: string;
+  trailer_path?: string;
+  budget?: string;
+  box_office?: string;
+  country?: string;
+  director?: string;
 }
 
 const MovieTable: React.FC = () => {
@@ -22,6 +31,7 @@ const MovieTable: React.FC = () => {
       const response = await fetch('/api/mysql/movies');
       const result = await response.json();
       if (response.ok) {
+        console.log('Fetched movies:', result); // Log fetched movies
         setMovies(result);
       } else {
         console.error('Failed to fetch movies:', result.error);
@@ -59,11 +69,8 @@ const MovieTable: React.FC = () => {
       });
       const result = await response.json();
       if (response.ok) {
-        if (method === 'POST') {
-          setMovies([...movies, result]);
-        } else {
-          setMovies(movies.map(m => (m.id === movie.id ? result : m)));
-        }
+        // Fetch movies again to update the list
+        fetchMovies();
         setSelectedMovie(null);
         setFormVisible(false);
       } else {
@@ -110,10 +117,30 @@ const MovieTable: React.FC = () => {
         enablePinning: true,
       },
       { accessorKey: 'title', header: 'Title', size: 150 },
-      { accessorKey: 'overview', header: 'Overview', size: 250 },
       { accessorKey: 'poster_path', header: 'Poster Path', size: 200 },
-      { accessorKey: 'release_date', header: 'Release Date', size: 150 },
+      {
+        accessorKey: 'release_date',
+        header: 'Release Date',
+        size: 150,
+        Cell: ({ cell }) => {
+          const date = new Date(cell.getValue<string>());
+          if (isNaN(date.getTime())) {
+            console.error('Invalid date value:', cell.getValue<string>());
+            return 'Invalid Date';
+          }
+          return format(date, 'yyyy-MM-dd'); // Format the date to yyyy-MM-dd
+        },
+      },
       { accessorKey: 'vote_average', header: 'Vote Average', size: 120 },
+      { accessorKey: 'runtime', header: 'Runtime (mins)', size: 150 },
+      { accessorKey: 'language', header: 'Language', size: 150 },
+      { accessorKey: 'movie_path', header: 'Movie Path', size: 200 },
+      { accessorKey: 'trailer_path', header: 'Trailer Path', size: 200 },
+      { accessorKey: 'budget', header: 'Budget', size: 150 },
+      { accessorKey: 'box_office', header: 'Box Office', size: 150 },
+      { accessorKey: 'country', header: 'Country', size: 150 },
+      { accessorKey: 'director', header: 'Director', size: 150 },
+      { accessorKey: 'overview', header: 'Overview', size: 250 },
     ],
     [movies],
   );
