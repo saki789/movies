@@ -1,0 +1,21 @@
+.formContainer
+{
+    background: lightseagreen;
+    width: fit-content;
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem;
+    .formContain
+    {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        text-align:  start;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: large;
+        .formLabel
+        {
+           
+        }
+    }
+}

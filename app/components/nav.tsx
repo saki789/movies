@@ -4,7 +4,9 @@ import React from 'react'
 
 const Nav: React.FC = () => {
   return (
-    <div>Nav</div>
+    <div>
+        nav
+    </div>
   )
 }
 

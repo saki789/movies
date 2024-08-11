@@ -1,0 +1,31 @@
+
+
+.asideContainer
+{
+    display: grid;
+    flex-direction: column;
+    gap: 4rem;
+    background: lightcyan;
+    height: 100%;
+    .asideTop
+    {
+        display: grid;
+        flex-direction: column;
+        :hover
+        {
+            background: lightcoral;
+        }
+        .Link
+        {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+}
+
+.asideTop,.asideMiddle,.asideBottom
+{
+    border-bottom: 1px solid gray;
+}

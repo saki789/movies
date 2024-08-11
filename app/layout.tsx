@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import styles from './layout.module.scss'
 import Nav from "./components/nav";
 import Aside from "./components/aside";
-import Main from "./components/main";
 import Footer from "./components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,14 +19,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className={styles.container}>
-          <nav className={styles.nav}><Nav/></nav>
-          <section className={styles.section}>
-            <aside className={styles.aside}><Aside/></aside>
-            <main className={styles.main}><Main/></main>
+      <body className={`font-sans ${inter.className}`}>
+        <div className="flex flex-col min-h-screen">
+          <nav className="bg-gray-800 text-white p-4">
+            <Nav />
+          </nav>
+          <section className="flex flex-1 flex-col md:flex-row overflow-hidden">
+            <aside className="w-full md:w-64 bg-gray-200 p-4 flex-shrink-0 overflow-y-auto">
+              <Aside />
+            </aside>
+            <main className="flex-1 p-2 bg-white overflow-auto">
+              {children}
+            </main>
           </section>
-          <footer className={styles.footer}><Footer/></footer>
+          <footer className="bg-gray-800 text-white p-4">
+            <Footer />
+          </footer>
         </div>
       </body>
     </html>

@@ -17,11 +17,53 @@
 }
 
 body {
- font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: rgb(var(--background-start-rgb));
+  color: rgb(var(--foreground-rgb));
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.table-container {
+  overflow-x: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .movie-card {
+    width: 100%;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.table-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-cell-wrap {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: hidden;
 }

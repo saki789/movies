@@ -1,0 +1,19 @@
+.movieContainer
+{
+    background: lightcoral;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .movieTop
+    {
+        flex: 1;
+        border-bottom: 1px solid gray;
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+    }
+    .movieBottom
+    {
+        flex: 5;
+    }
+}

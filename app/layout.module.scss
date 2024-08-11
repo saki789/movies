@@ -12,18 +12,17 @@
   .section {
     display: flex;
     flex: 1;
-    display: grid;
-    grid-template-columns: 250px 1fr;
+    display: flex;
   }
   
   .aside {
     background: lightcoral;
-    padding: 1rem;
+    width: auto;
   }
   
   .main {
     background: lightgreen;
-    padding: 1rem;
+    flex: 1;
   }
   
   .footer {
